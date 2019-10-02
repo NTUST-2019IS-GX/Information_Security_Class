@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 import sys
 
+
 def findchar(c, keytable):
     if c == "j":
         c = "i"
     for i in range(5):
         for j in range(5):
-            if(c == keytable[i][j]):
+            if (c == keytable[i][j]):
                 return [i, j]
+
 
 def caesar(key, plaintext):
     ciphertext = ""
@@ -32,7 +34,7 @@ def playfair(key, plaintext):
     keylist = list(keylist.keys())
     for i in range(5):
         for j in range(5):
-            keytable[i].append(keylist[j + i*5])
+            keytable[i].append(keylist[j + i * 5])
         # print(keytable[i])
 
     # --makepair--
@@ -58,10 +60,10 @@ def playfair(key, plaintext):
         b = findchar(textlist[0][1], keytable)
         if a[0] == b[0]:  # same row
             ciphertext += keytable[a[0]][(a[1] + 1) % 5] \
-                        + keytable[b[0]][(b[1] + 1) % 5]
+                          + keytable[b[0]][(b[1] + 1) % 5]
         elif a[1] == b[1]:  # same col
             ciphertext += keytable[(a[0] + 1) % 5][a[1]] \
-                        + keytable[(b[0] + 1) % 5][b[1]]
+                          + keytable[(b[0] + 1) % 5][b[1]]
         else:
             ciphertext += keytable[a[0]][b[1]] \
                           + keytable[b[0]][a[1]]
@@ -69,11 +71,11 @@ def playfair(key, plaintext):
     return ciphertext
 
 
-def vernam(key, plaintext):
+def vernam(key, plaintext):  # proposed the autokey system
     ciphertext = ""
-    key = str(key).lower()
+    key = str(key).lower() + plaintext
     for i in range(len(plaintext)):
-        ciphertext += chr((ord(plaintext[i]) + ord(key[i % len(key)]) - 194) % 26 + 97)
+        ciphertext += chr(((ord(plaintext[i]) - 97) ^ (ord(key[i]) - 97)) + 65)
     return ciphertext
 
 
