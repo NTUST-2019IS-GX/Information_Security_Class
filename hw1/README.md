@@ -48,3 +48,70 @@ RLLWNVPUNULCLYNPCLBW
 $ python Decrypt.py caesar 7 RLLWNVPUNULCLYNPCLBW
 keepgoingnevergiveup
 ```
+
+## 分工
+
+* `Encrypt` B10615013 四資工三甲 李聿鎧 
+* `Decrypt` B10615043 四資工三甲 何嘉峻 
+
+## Code Explain
+
+### Caesar cipher
+
+#### Encrypt
+``` python
+# code here
+```
+
+#### Decrypt
+``` python
+# code here
+```
+
+### Playfair cipher
+
+#### Encrypt
+``` python
+# code here
+```
+
+#### Decrypt
+``` python
+# code here
+```
+
+### Vernam proposed the autokey system
+
+#### Encrypt
+``` python
+# code here
+```
+
+#### Decrypt
+``` python
+# code here
+```
+
+### Row transposition
+
+#### Encrypt
+``` python
+# code here
+```
+
+#### Decrypt
+``` python
+# code here
+```
+
+### Rail fence cipher
+
+#### Encrypt
+``` python
+# code here
+```
+
+#### Decrypt
+``` python
+# code here
+```
