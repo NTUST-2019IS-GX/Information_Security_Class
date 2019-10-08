@@ -102,14 +102,16 @@ def row(key, plaintext):
 
 def rail_fence(key, plaintext):
     ciphertext = ""
-    key = int(key) - 1
+    key = int(key)
     index = -1
     add = 1
     railtable = [[] for i in range(key)]
     for i in range(len(plaintext)):
         index += add
         railtable[index].append(plaintext[i])
-        if index == key:
+        if key == 1:
+            add = 0
+        elif index == key - 1:
             add = -1
         elif index == 0:
             add = 1
