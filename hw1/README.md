@@ -400,11 +400,12 @@ class RailFence(DecryptMethod):
                 if j == index:
                     self.plaintext += self.fence[index][i]
             # 按照方向更換 row index
-            index += descending
-            if index == (self.key - 1):
-                descending = -1
-            elif index == 0:
-                descending = 1
+            if self.key > 1:
+                index += descending
+                if index == (self.key - 1):
+                    descending = -1
+                elif index == 0:
+                    descending = 1
         self.plaintext = self.plaintext.lower()
         return self.plaintext
 
@@ -421,10 +422,12 @@ class RailFence(DecryptMethod):
                     fence[j].append('-')
                 else:
                     fence[j].append('')
-            index += descending
-            if index == (self.key - 1):
-                descending = -1
-            elif index == 0:
-                descending = 1
+            # 按照方向更換 row index
+            if self.key > 1:
+                index += descending
+                if index == (self.key - 1):
+                    descending = -1
+                elif index == 0:
+                    descending = 1
         return fence
 ```
