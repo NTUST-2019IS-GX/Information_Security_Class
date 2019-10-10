@@ -359,14 +359,16 @@ class RowTransposition(DecryptMethod):
 ``` python
 def rail_fence(key, plaintext):
     ciphertext = ""
-    key = int(key) - 1
+    key = int(key)
     index = -1
     add = 1  # 方向由0至n
     railtable = [[] for i in range(key)]
     for i in range(len(plaintext)):  # 依序由0至n至0..，依此類推
         index += add
         railtable[index].append(plaintext[i])  # 把值加進指定的Row
-        if index == key:
+        if key == 1:
+            add = 0  # key=1為特殊情況
+        elif index == key - 1:
             add = -1  # 方向由n至0
         elif index == 0:
             add = 1  # 方向由0至n
