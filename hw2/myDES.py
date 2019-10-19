@@ -35,9 +35,17 @@ def sbox(sbox, src):
     return ''
 
 
-# CC TODO: f_func
 def f_func(r, key):
-    return ''
+    result = ''
+
+    # 32 -> 48 Expansion
+    tmp_r = transform(DESMethod.e, r)
+    tmp_r = xor(tmp_r, key)
+
+    for i in range(8):
+        result += sbox(DESMethod.s, tmp_r[i * 6:(i + 1) * 6])
+    result = transform(DESMethod.p, result)
+    return result
 
 
 class DESMethod:
@@ -170,3 +178,15 @@ class DESMethod:
 
     # Key Schedule (2/2)
     _shift = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
+
+    @property
+    def e(self):
+        return self._e
+
+    @property
+    def s(self):
+        return self._s
+
+    @property
+    def p(self):
+        return self._p
