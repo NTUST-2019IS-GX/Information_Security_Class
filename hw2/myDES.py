@@ -14,6 +14,7 @@ def xor(a, b):
             result += '0'
         else:
             result += '1'
+    return result
 
 
 def hex2bin(text):
