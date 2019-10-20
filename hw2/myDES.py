@@ -28,7 +28,7 @@ def bin2hex(text):
 def transform(table, src):
     dst = [''] * len(table)
     for i in range(len(table)):
-        dst[i] = src[table[i]]
+        dst[i] = src[table[i] - 1]
     return ''.join(dst)
 
 
