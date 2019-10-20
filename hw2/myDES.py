@@ -35,9 +35,17 @@ def sbox(sbox, src):
     return ''
 
 
-# CC TODO: f_func
 def f_func(r, key):
-    return ''
+    result = ''
+
+    # 32 -> 48 Expansion
+    tmp_r = transform(DESMethod.e, r)
+    tmp_r = xor(tmp_r, key)
+
+    for i in range(8):
+        result += sbox(DESMethod.s, tmp_r[i * 6:(i + 1) * 6])
+    result = transform(DESMethod.p, result)
+    return result
 
 
 class DESMethod:
@@ -61,15 +69,23 @@ class DESMethod:
             d = shift(d, self._shift[i])
             self.key_list.append(transform(self._pc2, c + d))
 
-    # YK TODO: encrypt
     def encrypt(self):
-        result = ''
-        return result
+        return self.feistel(0, 16, 1)
 
-    # CC TODO: decrypt
     def decrypt(self):
-        result = ''
-        return result
+        return self.feistel(15, -1, -1)
+
+    def feistel(self, begin, end, increment):
+        textbinary = transform(self._ip, self.textbinary)
+        l_i_1 = textbinary[:32]
+        r_i_1 = textbinary[32:]
+        for i in range(begin, end, increment):
+            l_i = r_i_1
+            r_i = xor(l_i_1, f_func(r_i_1, self.key_list[i]))
+            l_i_1 = l_i
+            r_i_1 = r_i
+        textbinary = transform(self._fp, r_i_1 + l_i_1)
+        return bin2hex(textbinary)
 
     # Inverse Permutation
     _ip = [58, 50, 42, 34, 26, 18, 10, 2,
@@ -170,3 +186,15 @@ class DESMethod:
 
     # Key Schedule (2/2)
     _shift = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
+
+    @property
+    def e(self):
+        return self._e
+
+    @property
+    def s(self):
+        return self._s
+
+    @property
+    def p(self):
+        return self._p
