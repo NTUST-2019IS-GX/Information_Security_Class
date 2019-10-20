@@ -26,10 +26,10 @@ def bin2hex(text):
 
 
 def transform(table, src):
-    dst = " " * len(table)
+    dst = [''] * len(table)
     for i in range(len(table)):
         dst[i] = src[table[i]]
-    return dst
+    return ''.join(dst)
 
 
 def sbox(box, src):
