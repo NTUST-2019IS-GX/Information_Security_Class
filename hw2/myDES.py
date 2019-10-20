@@ -25,14 +25,17 @@ def bin2hex(text):
     return hex(int(text, 2))
 
 
-# YK TODO: transform
 def transform(table, src):
-    return ''
+    dst = src
+    for i in range(len(src)):
+        dst[i] = src[table[i]]
+    return dst
 
 
-# YK TODO: sbox
-def sbox(sbox, src):
-    return ''
+def sbox(box, src):
+    row = int(src[0] + src[5], 2)
+    col = int(src[1:5], 2)
+    return box[row][col]
 
 
 # CC TODO: f_func
