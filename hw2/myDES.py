@@ -69,15 +69,23 @@ class DESMethod:
             d = shift(d, self._shift[i])
             self.key_list.append(transform(self._pc2, c + d))
 
-    # YK TODO: encrypt
     def encrypt(self):
-        result = ''
-        return result
+        return self.feistel(0, 16, 1)
 
-    # CC TODO: decrypt
     def decrypt(self):
-        result = ''
-        return result
+        return self.feistel(15, -1, -1)
+
+    def feistel(self, begin, end, increment):
+        textbinary = transform(self._ip, self.textbinary)
+        l_i_1 = textbinary[:32]
+        r_i_1 = textbinary[32:]
+        for i in range(begin, end, increment):
+            l_i = r_i_1
+            r_i = xor(l_i_1, f_func(r_i_1, self.key_list[i]))
+            l_i_1 = l_i
+            r_i_1 = r_i
+        textbinary = transform(self._fp, r_i_1 + l_i_1)
+        return bin2hex(textbinary)
 
     # Inverse Permutation
     _ip = [58, 50, 42, 34, 26, 18, 10, 2,
