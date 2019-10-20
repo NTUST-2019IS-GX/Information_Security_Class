@@ -22,7 +22,7 @@ def hex2bin(text):
 
 
 def bin2hex(text):
-    return hex(int(text, 2))
+    return "0x" + hex(int(text, 2))[2:].zfill(16)
 
 
 def transform(table, src):
