@@ -73,7 +73,7 @@ class DESMethod:
             self.key_list.append(transform(self._pc2, c + d))
 
     def encrypt(self):
-        return self.feistel(0, 16, 1)
+        return self.feistel(0, 16, 1).upper().replace('X', 'x')
 
     def decrypt(self):
         return self.feistel(15, -1, -1)
