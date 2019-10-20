@@ -35,7 +35,7 @@ def transform(table, src):
 def sbox(box, src):
     row = int(src[0] + src[5], 2)
     col = int(src[1:5], 2)
-    return box[row][col]
+    return bin(box[row][col])[2:].zfill(4)
 
 
 # CC TODO: f_func
