@@ -41,17 +41,30 @@ $ python ./DecryptDES.py 0x1259ACBD6544FCDA 0xB82CB4CAE5C4371C
 
 ## 分工
 
-* `Encrypt` B10615013 四資工三甲 李聿鎧 
-* `Decrypt` B10615043 四資工三甲 何嘉峻 
+* B10615013 四資工三甲 李聿鎧：`myDES.tool functions`
+* B10615043 四資工三甲 何嘉峻：`myDES.DESMethod`
 
 ## Code Explain
 
+### Files tree
+```
+├── myDES.py
+├── EncryptDES.py
+└── DecryptDES.py
+```
+
 ### Encrypt
 ``` python
-# TODO
+from myDES import DESMethod
+
+des = DESMethod(key, plaintext)
+print(des.decrypt())
 ```
 
 ### Decrypt
 ``` python
-# TODO
+from myDES import DESMethod
+
+des = DESMethod(key, ciphertext)
+print(des.decrypt())
 ```
