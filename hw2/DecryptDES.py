@@ -11,8 +11,8 @@ def main():
         print("Error: Wrong argv.")
         exit()
     key = sys.argv[1]
-    plaintext = sys.argv[2]
-    des = DESMethod(key, plaintext)
+    ciphertext = sys.argv[2]
+    des = DESMethod(key, ciphertext)
     print(des.decrypt())
 
 
