@@ -17,6 +17,6 @@ $ source venv/bin/activate
 ```
 ### Install requirements
 ```
-(venv) $ pip install --upgrade pip
+(venv) $ python -m pip install --upgrade pip
 (venv) $ pip install -r requirements.txt
 ```
