@@ -45,5 +45,19 @@ def byte_add(byte_val, int_val):
 
 
 def key_preprocess(key):
-    # TODO: preprocess
-    return key
+    # string to bytes
+    key = key.encode(encoding="utf-8")
+    key_bytes = len(key)
+    # 1 byte = 8 bits
+    if key_bytes == 16 or key_bytes == 24 or key_bytes == 32:  # equal 128 or 192 or 256 bits
+        return key
+    else:
+        if key_bytes < 16:  # key_bits < 128
+            return pad(key, 16)
+        elif key_bytes < 24:  # 128 < key_bits < 192
+            return pad(key, 24)
+        elif key_bytes < 32:  # 192 < key_bits < 256
+            return pad(key, 32)
+        else:  # otherwise
+            print("Error: key length must be lower than 256 bit.")
+            exit()
