@@ -37,3 +37,8 @@ def writeppm(result_ppm, magic_number, size, maximum_value, blocks):
 
 def byte_xor(ba1, ba2):
     return bytes([_a ^ _b for _a, _b in zip(ba1, ba2)])
+
+
+def byte_add(byte_val, int_val):
+    int_val = int_val + int.from_bytes(byte_val, byteorder='big')
+    return int_val.to_bytes(block_size, byteorder='big')
