@@ -7,6 +7,7 @@ def pad(block):
         block += bytes([blank])
     return block
 
+
 def openppm(ppm_name):
     with open(ppm_name, mode='rb') as file:
         magic_number = file.readline()
@@ -24,6 +25,7 @@ def openppm(ppm_name):
         blocks[-1] = pad(blocks[-1])
     return magic_number, size, maximum_value, blocks
 
+
 def writeppm(result_ppm, magic_number, size, maximum_value, blocks):
     with open(result_ppm, 'wb') as result:
         result.write(magic_number)
@@ -31,3 +33,7 @@ def writeppm(result_ppm, magic_number, size, maximum_value, blocks):
         result.write(maximum_value)
         for block in blocks:
             result.write(block)
+
+
+def byte_xor(ba1, ba2):
+    return bytes([_a ^ _b for _a, _b in zip(ba1, ba2)])
