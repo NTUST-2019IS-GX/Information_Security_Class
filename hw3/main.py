@@ -1,7 +1,6 @@
 from PIL import Image
-from myTool import *
-from EncryptAES import EncryptAES
-from DecryptAES import DecryptAES
+from myTool import openppm, writeppm
+from myAES import EncryptAES, DecryptAES
 import sys
 
 # main.py Tux.jpg ECB
@@ -15,7 +14,7 @@ def main():
     img_name = sys.argv[1]
     ppm_name = img_name + '.ppm'
 
-    encrypt_img = 'encrypt' + img_name
+    encrypt_img = 'encrypt_' + img_name
     encrypt_ppm = encrypt_img + '.ppm'
 
     im = Image.open(img_name)
@@ -23,6 +22,7 @@ def main():
 
     magic_number, size, maximum_value, blocks = openppm(ppm_name)
 
+    # TODO: argv put key
     arr_aes = EncryptAES(blocks, "put key", sys.argv[2])
 
     writeppm(encrypt_ppm, magic_number, size, maximum_value, arr_aes)
@@ -32,11 +32,12 @@ def main():
 
     # Decrypt
 
-    decrypt_img = 'decrypt' + img_name
+    decrypt_img = 'decrypt_' + img_name
     decrypt_ppm = decrypt_img + '.ppm'
 
     magic_number, size, maximum_value, blocks = openppm(encrypt_ppm)
 
+    # TODO: argv put key
     arr_aes = DecryptAES(blocks, "put key", sys.argv[2])
 
     writeppm(decrypt_ppm, magic_number, size, maximum_value, arr_aes)

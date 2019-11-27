@@ -1,8 +1,8 @@
-block_size = 16
+block_size = 16  # 128 bits
 
 
-def pad(block):
-    blank = block_size - len(block)
+def pad(block, size):
+    blank = size - len(block)
     for i in range(blank):
         block += bytes([blank])
     return block
@@ -22,7 +22,7 @@ def openppm(ppm_name):
             content = file.read(16)
 
         # Padding Process
-        blocks[-1] = pad(blocks[-1])
+        blocks[-1] = pad(blocks[-1], block_size)
     return magic_number, size, maximum_value, blocks
 
 
@@ -42,3 +42,8 @@ def byte_xor(ba1, ba2):
 def byte_add(byte_val, int_val):
     int_val = int_val + int.from_bytes(byte_val, byteorder='big')
     return int_val.to_bytes(block_size, byteorder='big')
+
+
+def key_preprocess(key):
+    # TODO: preprocess
+    return key
