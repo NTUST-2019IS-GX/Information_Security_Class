@@ -9,7 +9,7 @@ def EncryptAES(block_array, key, mode):
 
     # TODO: key process
     key = key_preprocess(key)
-    key = b'1234567890123456'
+    # key = b'1234567890123456'
 
     encrypt_array = []
     cipher = AES.new(key, AES.MODE_ECB)
@@ -33,12 +33,15 @@ def EncryptAES(block_array, key, mode):
             initial_vector = byte_add(initial_vector, 1)
         return encrypt_array
 
+    else:  # otherwise
+        print("Error: Encrypt mode only support ECB/CBC/CTR")
+        exit()
 
 def DecryptAES(block_array, key, mode):
 
     # TODO: key process
     key = key_preprocess(key)
-    key = b'1234567890123456'
+    # key = b'1234567890123456'
 
     decrypt_array = []
     cipher = AES.new(key, AES.MODE_ECB)
@@ -61,3 +64,7 @@ def DecryptAES(block_array, key, mode):
             decrypt_array.append(byte_xor(cipher.encrypt(counter), block))
             counter = byte_add(counter, 1)
         return decrypt_array
+
+    else:  # otherwise
+        print("Error: Decrypt mode only support ECB/CBC/CTR")
+        exit()

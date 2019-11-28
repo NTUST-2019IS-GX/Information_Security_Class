@@ -2,28 +2,33 @@ from PIL import Image
 from myTool import openppm, writeppm
 from myAES import EncryptAES, DecryptAES
 import sys
+import os
 
-# main.py Tux.jpg ECB
+# Example input
+# main.py Tux.jpg ECB linuxpenguinistux
 
 
 def main():
-    if len(sys.argv) != 3:
-        print("Error: Wrong argv.")
+    if len(sys.argv) != 4:
+        print("Error: Wrong argv. Format: main.py {picture name} {mode} {key (str)}")
         exit()
 
     img_name = sys.argv[1]
-    ppm_name = img_name + '.ppm'
-
-    encrypt_img = 'encrypt_' + img_name
-    encrypt_ppm = encrypt_img + '.ppm'
+    mode = sys.argv[2].upper()
+    key = sys.argv[3].upper()
 
     im = Image.open(img_name)
+    filename = os.path.splitext(im.filename)[0]
+
+    ppm_name = filename + '.ppm'
     im.save(ppm_name, 'ppm')
 
     magic_number, size, maximum_value, blocks = openppm(ppm_name)
 
-    # TODO: argv put key
-    arr_aes = EncryptAES(blocks, "put key", sys.argv[2])
+    arr_aes = EncryptAES(blocks, key, mode)
+
+    encrypt_img = filename + '_encrypt.jpg'
+    encrypt_ppm = filename + '_encrypt.ppm'
 
     writeppm(encrypt_ppm, magic_number, size, maximum_value, arr_aes)
 
@@ -32,13 +37,12 @@ def main():
 
     # Decrypt
 
-    decrypt_img = 'decrypt_' + img_name
-    decrypt_ppm = decrypt_img + '.ppm'
-
     magic_number, size, maximum_value, blocks = openppm(encrypt_ppm)
 
-    # TODO: argv put key
-    arr_aes = DecryptAES(blocks, "put key", sys.argv[2])
+    arr_aes = DecryptAES(blocks, key, mode)
+
+    decrypt_img = filename + '_decrypt.jpg'
+    decrypt_ppm = filename + '_decrypt.ppm'
 
     writeppm(decrypt_ppm, magic_number, size, maximum_value, arr_aes)
 
