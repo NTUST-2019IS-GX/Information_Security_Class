@@ -7,9 +7,7 @@ CTR_iv = b'\xe5\xad\xa6\xe4\xb9\xa0\xe5\xbe\x00\x00\x00\x00\x00\x00\x00\x00'
 
 def EncryptAES(block_array, key, mode):
 
-    # TODO: key process
     key = key_preprocess(key)
-    # key = b'1234567890123456'
 
     encrypt_array = []
     cipher = AES.new(key, AES.MODE_ECB)
@@ -37,29 +35,33 @@ def EncryptAES(block_array, key, mode):
         print("Error: Encrypt mode only support ECB/CBC/CTR")
         exit()
 
+
 def DecryptAES(block_array, key, mode):
-
-    # TODO: key process
+    # Do key preprocess
     key = key_preprocess(key)
-    # key = b'1234567890123456'
 
+    # new array to save decrypt blocks and new AES cipher
     decrypt_array = []
     cipher = AES.new(key, AES.MODE_ECB)
 
+    # Determine Mode
     if mode == 'ECB':
+        # Every block do once AES
         for block in block_array:
             decrypt_array.append(cipher.decrypt(block))
         return decrypt_array
 
     elif mode == 'CBC':
-        iv = CBC_iv
+        iv = CBC_iv  # C0 = Initial Vector
+        # Pi = Dk(Ci) xor Ci-1
         for block in block_array:
             decrypt_array.append(byte_xor(iv, cipher.decrypt(block)))
             iv = block
         return decrypt_array
 
     elif mode == 'CTR':
-        counter = CTR_iv
+        counter = CTR_iv  # Initial Counter
+        # Pi = Ek(CTR + i) xor Ci
         for block in block_array:
             decrypt_array.append(byte_xor(cipher.encrypt(counter), block))
             counter = byte_add(counter, 1)
