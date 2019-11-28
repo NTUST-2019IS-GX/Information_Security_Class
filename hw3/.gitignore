@@ -1,0 +1,5 @@
+# For hw3 project
+
+*.ppm
+*_encrypt.jpg
+*_decrypt.jpg
