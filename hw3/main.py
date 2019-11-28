@@ -20,6 +20,9 @@ def main():
     im = Image.open(img_name)
     filename = os.path.splitext(im.filename)[0]
 
+    if im.mode == "P":
+        im = im.convert('RGB')
+
     ppm_name = filename + '.ppm'
     im.save(ppm_name, 'ppm')
 
