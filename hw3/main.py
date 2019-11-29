@@ -5,7 +5,7 @@ import sys
 import os
 
 # Example input
-# main.py test_pic_1/Tux.jpg ECB linuxpenguinistux
+# main.py test_pic_1/Tux.png ECB linuxpenguinistux
 
 
 def main():

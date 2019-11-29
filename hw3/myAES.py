@@ -1,8 +1,7 @@
 from Crypto.Cipher import AES
-from myTool import byte_xor, byte_add, key_preprocess
+from myTool import byte_xor, byte_add, byte_shift, PRNGs, key_preprocess
 
-CBC_iv = b'1234567890123456'
-CTR_iv = b'\xe5\xad\xa6\xe4\xb9\xa0\xe5\xbe\x00\x00\x00\x00\x00\x00\x00\x00'
+iv = b'1234567890123456'  # Initial Vector
 
 
 def EncryptAES(block_array, key, mode):
@@ -18,21 +17,24 @@ def EncryptAES(block_array, key, mode):
         return encrypt_array
 
     elif mode == 'CBC':
-        cipher_block = CBC_iv  # Initial Vector
+        cipher_block = iv  # Initial Vector
         for block in block_array:
             cipher_block = cipher.encrypt(byte_xor(cipher_block, block))
             encrypt_array.append(cipher_block)
         return encrypt_array
 
-    elif mode == 'CTR':
-        initial_vector = CTR_iv  # Initial Vector
+    elif mode == 'COOL':
+        initial_vector = iv  # Initial Vector
+        i = 0
         for block in block_array:
             encrypt_array.append(byte_xor(cipher.encrypt(initial_vector), block))
-            initial_vector = byte_add(initial_vector, 1)
+            # initial_vector = byte_add(initial_vector, 1) -> origin CTR
+            initial_vector = byte_shift(initial_vector, PRNGs(i))  # shift RND byte
+            i += 1
         return encrypt_array
 
     else:  # otherwise
-        print("Error: Encrypt mode only support ECB/CBC/CTR")
+        print("Error: Encrypt mode only support ECB/CBC/COOL")
         exit()
 
 
@@ -52,21 +54,24 @@ def DecryptAES(block_array, key, mode):
         return decrypt_array
 
     elif mode == 'CBC':
-        iv = CBC_iv  # C0 = Initial Vector
+        initial_vector = iv  # C0 = Initial Vector
         # Pi = Dk(Ci) xor Ci-1
         for block in block_array:
-            decrypt_array.append(byte_xor(iv, cipher.decrypt(block)))
-            iv = block
+            decrypt_array.append(byte_xor(initial_vector, cipher.decrypt(block)))
+            initial_vector = block
         return decrypt_array
 
-    elif mode == 'CTR':
-        counter = CTR_iv  # Initial Counter
+    elif mode == 'COOL':
+        initial_vector = iv  # Initial Counter
         # Pi = Ek(CTR + i) xor Ci
+        i = 0
         for block in block_array:
-            decrypt_array.append(byte_xor(cipher.encrypt(counter), block))
-            counter = byte_add(counter, 1)
+            decrypt_array.append(byte_xor(cipher.encrypt(initial_vector), block))
+            # initial_vector = byte_add(initial_vector, 1) -> origin CTR
+            initial_vector = byte_shift(initial_vector, PRNGs(i))  # shift RND byte
+            i += 1
         return decrypt_array
 
     else:  # otherwise
-        print("Error: Decrypt mode only support ECB/CBC/CTR")
+        print("Error: Decrypt mode only support ECB/CBC/COOL")
         exit()
