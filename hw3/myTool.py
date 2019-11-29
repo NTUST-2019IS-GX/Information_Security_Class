@@ -44,6 +44,13 @@ def byte_add(byte_val, int_val):
     return int_val.to_bytes(block_size, byteorder='big')
 
 
+def byte_shift(byte, shift_bit):  # circuit shift
+    shift_bit = shift_bit % len(byte)
+    a = byte[shift_bit:]
+    b = byte[0:shift_bit]
+    return a + b
+
+
 def key_preprocess(key):
     # string to bytes
     key = key.encode(encoding="utf-8")
@@ -61,3 +68,8 @@ def key_preprocess(key):
         else:  # otherwise
             print("Error: key length must be lower than 256 bit.")
             exit()
+
+
+def PRNGs(x):  # fake PRNGs
+    rnd_arr = [5, 18, 16, 15, 4, 9, 6, 14, 18, 12, 17, 9, 9, 10, 10, 6, 3, 4, 18, 4]
+    return rnd_arr[x % len(rnd_arr)]
