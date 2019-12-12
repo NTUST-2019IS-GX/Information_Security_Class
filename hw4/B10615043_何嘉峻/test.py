@@ -1,9 +1,15 @@
-from Rsa import init, encrypt, decrypt
+from Rsa import init, encrypt, decrypt, decrypt_CRT
 
 
 def main():
+    base = input('Which base mode (dec/hex): ')
+    if base == 'hex':
+        base = 16
+    else:
+        base = 10
+
     bit_len = 1024
-    p, q, n, e, d = init(bit_len)
+    p, q, n, e, d = init(bit_len, base)
 
     print('Init', bit_len, 'bit key result:')
     print('p = ', p)
@@ -14,13 +20,22 @@ def main():
 
     plaintext = input('Plaintext = ')
 
-    cipher_array = encrypt(n, e, plaintext)
+    cipher_array = encrypt(n, e, plaintext, base)
     print('Ciphertext =', ' '.join(cipher_array))
 
-    if decrypt(n, d, cipher_array) == plaintext:
-        print('Correct Result')
+    result = decrypt(n, d, cipher_array, base)
+    print('Origin Decrypt Result =', result)
+    if result == plaintext:
+        print('--- Origin Decrypt CORRECT ---')
     else:
-        print('Wrong Result')
+        raise Exception('Origin Decrypt WRONG')
+
+    crt_result = decrypt_CRT(d, p, q, cipher_array, base)
+    print('CRT Decrypt Result =', crt_result)
+    if crt_result == plaintext:
+        print('--- CRT Decrypt CORRECT ---')
+    else:
+        raise Exception('CRT Decrypt WRONG')
 
     exit()
 
