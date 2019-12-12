@@ -8,6 +8,16 @@ from random import randint, getrandbits
 from math import gcd
 
 
+def myPow(x, H, n):  # Square-and-Multiply
+    h = format(H, 'b')
+    y = x
+    for i in range(1, len(h)):
+        y = pow(y, 2, n)
+        if h[i] == "1":
+            y = (y * x) % n
+    return y
+
+
 def MillerRabinTest(n):  # Miller–Rabin primality test
     m = n - 1
     k = 0
@@ -15,11 +25,11 @@ def MillerRabinTest(n):  # Miller–Rabin primality test
         m //= 2
         k += 1
     a = randint(2, n - 1)  # a in {2, ..., n-2}
-    b = pow(a, m, n)
+    b = myPow(a, m, n)
     if b != 1 and b != n - 1:
         i = 1
         while i < k and b != n - 1:
-            b = pow(b, 2, n)
+            b = myPow(b, 2, n)
             if b == 1:
                 return False
             i += 1
@@ -75,6 +85,7 @@ def mod_inverse(a, b):
     else:
         return x % b
 
+
 def initial(bits):
     p = get_RndPrime(bits)
     q = get_RndPrime(bits)
@@ -98,7 +109,7 @@ def encrypt(plaintext, n, e):
     ciphertext = ""
     for c in plaintext:
         c = ord(c)
-        ciphertext += str(pow(c, e, n)) + ","
+        ciphertext += str(myPow(c, e, n)) + ","
     return ciphertext[:len(ciphertext) - 1]
 
 
@@ -107,7 +118,7 @@ def decrypt(ciphertext, n, d):
     cipher_array = ciphertext.split(",")
     for c in cipher_array:
         c = int(c)
-        plaintext += chr(pow(c, d, n))
+        plaintext += chr(myPow(c, d, n))
     return plaintext
 
 
@@ -128,6 +139,7 @@ def readfile(filename):
     fp = open(filename)
     lines = fp.readlines()
     return lines
+
 
 def writefile(filename, text):
     fp = open(filename, "w")
@@ -157,7 +169,6 @@ def main():
         ciphertext = encrypt(plaintext, n, d)
         print(ciphertext + "\n")
         writefile("ciphertext.txt", ciphertext)
-
 
     elif option == "-d":  # Decrypt
         cipherFileName = str(sys.argv[2])
